@@ -85,6 +85,12 @@ HELP
 }
 
 SPLIT=0
+DOWNLOAD_ONLY=0
+
+if [ "$1" = "--download-only" ]; then
+    DOWNLOAD_ONLY=1
+    shift
+fi
 
 case "$1" in
     -h|--help)
@@ -233,6 +239,11 @@ if [ "$SPLIT" = "1" ]; then
 else
     MODEL_PATH="${MODELS_DIR}/${MODEL_FILE}"
     download_model "$MODEL_FILE" "$MODEL_URL"
+fi
+
+if [ "$DOWNLOAD_ONLY" = "1" ]; then
+    echo "Download complete. Sleeping."
+    exec sleep infinity
 fi
 
 exec llama-server \
