@@ -1,4 +1,4 @@
-IMAGE = ghcr.io/cohadar/ik_llamma
+IMAGE = ghcr.io/cohadar/ik_llama
 TAG = 0.1.0
 
 login:
