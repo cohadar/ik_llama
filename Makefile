@@ -1,6 +1,9 @@
 IMAGE = ghcr.io/cohadar/ik_llamma
 TAG = 0.1.0
 
+login:
+	podman login ghcr.io -u cohadar
+
 build:
 	podman build -t $(IMAGE):$(TAG) .
 
