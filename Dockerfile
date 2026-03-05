@@ -28,7 +28,7 @@ COPY --from=build /src/build/bin/llama-server /usr/local/bin/
 COPY --from=build /libs/ /usr/local/lib/
 RUN ldconfig
 
-COPY entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY entrypoint.sh download-all.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/download-all.sh
 
 ENTRYPOINT ["entrypoint.sh"]

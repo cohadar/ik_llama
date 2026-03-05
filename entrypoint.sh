@@ -242,8 +242,8 @@ else
 fi
 
 if [ "$DOWNLOAD_ONLY" = "1" ]; then
-    echo "Download complete. Sleeping."
-    exec sleep infinity
+    echo "Download complete."
+    exit 0
 fi
 
 exec llama-server \

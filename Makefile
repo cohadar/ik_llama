@@ -1,5 +1,5 @@
 IMAGE = ghcr.io/cohadar/ik_llama
-TAG = 0.3.2
+TAG = 0.3.4
 
 login:
 	podman login ghcr.io -u cohadar
