@@ -12,10 +12,7 @@ WORKDIR /src
 
 RUN cmake -B build \
     -DCMAKE_BUILD_TYPE=Release \
-    -DGGML_NATIVE=OFF \
-    -DGGML_AVX2=ON \
-    -DGGML_FMA=ON \
-    -DGGML_F16C=ON \
+    -DGGML_NATIVE=ON \
     && cmake --build build --target llama-server -j$(nproc)
 
 FROM ubuntu:24.04
