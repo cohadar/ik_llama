@@ -21,10 +21,14 @@ FROM ubuntu:24.04
 
 RUN apt-get update && apt-get install -y \
     libgomp1 \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /src/build/bin/llama-server /usr/local/bin/
 COPY --from=build /libs/ /usr/local/lib/
 RUN ldconfig
 
-ENTRYPOINT ["llama-server"]
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["entrypoint.sh"]
