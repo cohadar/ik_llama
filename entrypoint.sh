@@ -5,10 +5,15 @@ MODELS_DIR="/models"
 HF="https://huggingface.co"
 
 download_model() {
-    if [ ! -f "${MODELS_DIR}/$1" ]; then
-        echo "Downloading $1..."
-        curl -L -o "${MODELS_DIR}/$1" "$2"
+    local dest="${MODELS_DIR}/$1"
+    if [ -f "$dest" ]; then
+        echo "$1 already exists, skipping"
+        return
     fi
+    rm -f "${dest}.tmp"
+    echo "Downloading $1..."
+    curl -L -o "${dest}.tmp" "$2"
+    mv "${dest}.tmp" "$dest"
 }
 
 download_split() {
@@ -22,8 +27,10 @@ download_split() {
         local padded=$(printf "%05d" "$i")
         local file="${base}-${padded}-of-${total_padded}.gguf"
         if [ ! -f "${MODELS_DIR}/${file}" ]; then
+            rm -f "${MODELS_DIR}/${file}.tmp"
             echo "Downloading ${file}..."
-            curl -L -o "${MODELS_DIR}/${file}" "${HF}/${repo}/resolve/main/${subdir}/${file}"
+            curl -L -o "${MODELS_DIR}/${file}.tmp" "${HF}/${repo}/resolve/main/${subdir}/${file}"
+            mv "${MODELS_DIR}/${file}.tmp" "${MODELS_DIR}/${file}"
         fi
         i=$((i + 1))
     done
