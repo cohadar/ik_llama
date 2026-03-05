@@ -15,6 +15,8 @@ RUN cmake -B build \
     -DGGML_NATIVE=ON \
     && cmake --build build --target llama-server -j$(nproc)
 
+RUN mkdir /libs && find /src/build -name '*.so' -exec cp {} /libs/ \;
+
 FROM ubuntu:24.04
 
 RUN apt-get update && apt-get install -y \
@@ -22,8 +24,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /src/build/bin/llama-server /usr/local/bin/
-COPY --from=build /src/build/src/*.so /usr/local/lib/
-COPY --from=build /src/build/ggml/src/*.so /usr/local/lib/
+COPY --from=build /libs/ /usr/local/lib/
 RUN ldconfig
 
 ENTRYPOINT ["llama-server"]

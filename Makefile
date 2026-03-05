@@ -7,5 +7,11 @@ login:
 build:
 	podman build -t $(IMAGE):$(TAG) .
 
+run:
+	podman run --rm -d --name ik_llama -p 8080:8080 $(IMAGE):$(TAG) --help
+
+stop:
+	podman stop ik_llama
+
 push:
 	podman push $(IMAGE):$(TAG)
