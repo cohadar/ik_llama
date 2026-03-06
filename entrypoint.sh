@@ -250,4 +250,4 @@ exec llama-server \
     --model "$MODEL_PATH" \
     --host 0.0.0.0 \
     --port 8080 \
-    --ctx-size 4096
+    --ctx-size "${CTX_SIZE:-4096}"
