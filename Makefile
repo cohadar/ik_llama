@@ -1,5 +1,5 @@
 IMAGE = ghcr.io/cohadar/ik_llama
-TAG = 0.3.5
+TAG = 0.3.6
 
 login:
 	podman login ghcr.io -u cohadar
@@ -7,8 +7,14 @@ login:
 build:
 	podman build -t $(IMAGE):$(TAG) .
 
+download:
+	podman run --rm -v ik_llama_models:/models $(IMAGE):$(TAG) --download-only $(MODEL)
+
+download-all:
+	podman run --rm -v ik_llama_models:/models --entrypoint download-all.sh $(IMAGE):$(TAG)
+
 run:
-	podman run --rm -d --name ik_llama -p 8080:8080 $(IMAGE):$(TAG) --help
+	podman run --rm -d --name ik_llama -v ik_llama_models:/models -p 11434:11434 $(IMAGE):$(TAG) $(MODEL)
 
 stop:
 	podman stop ik_llama
