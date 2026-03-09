@@ -22,7 +22,12 @@ FROM ubuntu:24.04
 RUN apt-get update && apt-get install -y \
     libgomp1 \
     curl \
-    && rm -rf /var/lib/apt/lists/*
+    unzip \
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip \
+    && unzip -q /tmp/awscliv2.zip -d /tmp \
+    && /tmp/aws/install \
+    && rm -rf /tmp/aws /tmp/awscliv2.zip
 
 COPY --from=build /src/build/bin/llama-server /usr/local/bin/
 COPY --from=build /libs/ /usr/local/lib/
