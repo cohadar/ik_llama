@@ -21,3 +21,18 @@ stop:
 
 push:
 	podman push $(IMAGE):$(TAG)
+
+S3_ENDPOINT = https://minio.i.cohadar.cc
+S3_BUCKET = s3://models
+
+s3-upload:
+	podman run --rm -v ik_llama_models:/models \
+		-e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY \
+		--entrypoint aws $(IMAGE):$(TAG) \
+		s3 sync /models $(S3_BUCKET) --endpoint-url $(S3_ENDPOINT)
+
+s3-download:
+	podman run --rm -v ik_llama_models:/models \
+		-e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY \
+		--entrypoint aws $(IMAGE):$(TAG) \
+		s3 sync $(S3_BUCKET) /models --endpoint-url $(S3_ENDPOINT)
